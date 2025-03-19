@@ -1,0 +1,14 @@
+{
+  "name": "app",
+  "private": true,
+  "devDependencies": {
+    "esbuild": "^0.25.1"
+  },
+  "scripts": {
+    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx"
+  },
+  "dependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
