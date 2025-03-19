@@ -2,14 +2,18 @@
   "name": "app",
   "private": true,
   "devDependencies": {
+    "@types/react-router-dom": "^5.3.3",
     "esbuild": "^0.25.1"
   },
   "scripts": {
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx"
   },
   "dependencies": {
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^7.4.0"
+    "react-router-dom": "^7.4.0",
+    "typescript": "^5.8.2"
   }
 }
