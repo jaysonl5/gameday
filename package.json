@@ -6,14 +6,22 @@
     "esbuild": "^0.25.1"
   },
   "scripts": {
-    "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx"
+    "build": "esbuild app/javascript/application.tsx --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx --platform=browser --external:fs --external:os --external:path --external:child_process --external:crypto --external:tty"
   },
   "dependencies": {
+    "@chakra-ui/cli": "^3.13.0",
+    "@chakra-ui/react": "^3.13.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
+    "add": "^2.0.6",
+    "framer-motion": "^12.5.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.4.0",
+    "snippet": "^0.1.0",
     "typescript": "^5.8.2"
   }
 }

@@ -1,14 +1,16 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Payments from "./Payments";
 import { Dashboard } from "./Dashboard";
+import { Container } from "@chakra-ui/react";
+import { Nav } from "./Nav";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <nav>
-        <Link to="/">Dashboard</Link> | <Link to="/Payments">Payments</Link>
-      </nav>
+      <Container>
+        <Nav />
+      </Container>
       <Routes>
         <Route path="/" element={<Dashboard />} />
         <Route path="/Payments" element={<Payments />} />
