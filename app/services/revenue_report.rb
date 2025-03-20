@@ -40,6 +40,7 @@ class RevenueReport
 
   def generate_payment_breakdown(payments)
     {
+      by_source: payments.group(:source).sum(:amount),
       by_type: payments.group(:payment_type).sum(:amount),
       by_month: payments.group("DATE_TRUNC('month', created_at)").sum(:amount),
       total_count: payments.count
