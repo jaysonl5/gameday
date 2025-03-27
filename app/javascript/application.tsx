@@ -2,7 +2,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
-import Provider from "./components/Provider";
 import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
