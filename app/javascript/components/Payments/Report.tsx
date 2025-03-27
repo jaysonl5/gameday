@@ -1,12 +1,31 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import useSWR from "swr";
 import { PaymentReportResponse } from "./types";
 import { swrFetcher } from "../../utils/swr-fetcher";
-import { Card, Container, Separator, Spacer, Text } from "@chakra-ui/react";
+
 import { formatCurrency } from "../../utils/index";
 import dayjs from "dayjs";
+import {
+  Text,
+  Card,
+  Container,
+  Flex,
+  Transition,
+  List,
+  ListItem,
+  ThemeIcon,
+  Group,
+} from "@mantine/core";
+import { MdOutlinePointOfSale } from "react-icons/md";
+import { TbMoneybag, TbPigMoney, TbTruckReturn } from "react-icons/tb";
 
 export const Report = () => {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    setVisible(true); // Trigger the transition when the component mounts
+  }, []);
+
   const { data, error, isLoading } = useSWR<PaymentReportResponse>(
     "/api/v1/payments/report",
     swrFetcher
@@ -28,34 +47,50 @@ export const Report = () => {
 
   return (
     <Container>
-      <Text textStyle="5xl">
+      <Text size="xl">
         {dayjs(data?.date_range.start_date).format("MM/DD/YYYY")} -{" "}
         {dayjs(data?.date_range.end_date).format("MM/DD/YYYY")}
       </Text>
-      <Card.Root width="1/4">
-        <Card.Header>
-          <Card.Title>Total Revenue</Card.Title>
-        </Card.Header>
-        <Card.Body>
-          <Text>{formatCurrency(data?.total_revenue)}</Text>
-        </Card.Body>
-        <Card.Footer>
-          <Text textStyle="sm">
+      <Flex gap="lg" justify="flex-start" direction="row">
+        <Card shadow="md" padding="xl" radius="md" withBorder w={300}>
+          <Group justify="start">
+            <ThemeIcon radius="xl" color="teal">
+              <TbPigMoney size={24} />
+            </ThemeIcon>
+            <Text size="lg" fw={700}>
+              Total Revenue
+            </Text>
+            <Text>{formatCurrency(data?.total_revenue)}</Text>
+          </Group>
+
+          <List size="md">
             {salesByType
               .map((item) => (
-                <Text key={item.label}>
-                  {item.label}: {formatCurrency(item.value)}
-                </Text>
+                <Group justify="start">
+                  <ListItem
+                    key={item.label}
+                    icon={
+                      item.label === "Sale" ? (
+                        <ThemeIcon color="teal" radius="xl">
+                          <MdOutlinePointOfSale size={24} />
+                        </ThemeIcon>
+                      ) : (
+                        <ThemeIcon color="red" radius="xl">
+                          <TbTruckReturn size={24} />
+                        </ThemeIcon>
+                      )
+                    }
+                  >
+                    {item.label}: {formatCurrency(item.value)}
+                  </ListItem>
+                </Group>
               ))
               .sort((a, b) => (b.key ?? "").localeCompare(a.key ?? ""))}
-          </Text>
-        </Card.Footer>
-      </Card.Root>
-      <Card.Root width="1/4">
-        <Card.Header>
-          <Card.Title>Revenue by Type</Card.Title>
-        </Card.Header>
-        <Card.Body>
+          </List>
+        </Card>
+        <Card shadow="md" padding="xl" radius="md" withBorder w={300}>
+          <Text size="lg">Revenue by Type</Text>
+
           <Text>
             {salesBySource.map((item) => (
               <Text key={item.label}>
@@ -63,17 +98,12 @@ export const Report = () => {
               </Text>
             ))}
           </Text>
-        </Card.Body>
-        <Card.Footer></Card.Footer>
-      </Card.Root>
-      <Card.Root width="1/4">
-        <Card.Header>
-          <Card.Title>Sales</Card.Title>
-        </Card.Header>
-        <Card.Body>
+        </Card>
+        <Card shadow="md" padding="xl" radius="md" withBorder w={300}>
+          <Text size="lg">Sales</Text>
           <Text>{data?.payment_breakdown.total_count}</Text>
-        </Card.Body>
-      </Card.Root>
+        </Card>
+      </Flex>
       {isLoading && <p>Loading...</p>}
       {error && <p>Error loading report</p>}
     </Container>

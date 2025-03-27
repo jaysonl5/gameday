@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Payments from "./Payments";
 import { Dashboard } from "./Dashboard";
-import { Container } from "@chakra-ui/react";
 import { Nav } from "./Nav";
+import { Container } from "@mantine/core";
 
 const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <Container>
+      <Container p={15} pt={30} my={10}>
         <Nav />
       </Container>
       <Routes>

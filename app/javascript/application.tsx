@@ -2,17 +2,19 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./components/App";
-import { ChakraProvider, defaultSystem, Theme } from "@chakra-ui/react";
 import Provider from "./components/Provider";
+import "@mantine/core/styles.css";
+
+import { MantineProvider } from "@mantine/core";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
-      <Provider>
+      <MantineProvider>
         <App />
-      </Provider>
+      </MantineProvider>
     </React.StrictMode>
   );
 }

@@ -1,42 +1,42 @@
 import React from "react";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
-import { Button, ButtonGroup, Flex, Image } from "@chakra-ui/react";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
+import { Button, Flex, Image } from "@mantine/core";
 
 export const Nav: React.FC = () => {
   const location = useLocation();
 
   const getButtonVariant = (path: string) =>
-    location.pathname === path ? "solid" : "ghost";
+    location.pathname === path ? "filled" : "subtle";
   return (
     <Flex direction="row" justify="space-between" gap={4}>
       <Image
-        rounded="md"
-        w="250px"
-        aspectRatio={2 / 1}
+        w="150px"
         fit="contain"
         src="https://gamedaymenshealth.com/wp-content/uploads/2024/09/GD-Header-black.png"
         alt="Logo"
       />
-      <ButtonGroup>
-        <Button asChild variant={getButtonVariant("/")}>
-          <RouterLink to="/">
-            Dashboard <MdOutlineSpaceDashboard />
-          </RouterLink>
+      <Button.Group>
+        <Button
+          color="var(--mantine-color-dark-8)"
+          variant={getButtonVariant("/")}
+          component={Link}
+          to="/"
+        >
+          Dashboard <MdOutlineSpaceDashboard />
         </Button>
 
         <Button
-          asChild
-          colorPalette="green"
+          component={Link}
+          to="/Payments"
+          color="green"
           variant={getButtonVariant("/Payments")}
         >
-          <RouterLink to="/Payments">
-            Payments <TbPigMoney />
-          </RouterLink>
+          Payments <TbPigMoney />
         </Button>
-      </ButtonGroup>
+      </Button.Group>
     </Flex>
   );
 };

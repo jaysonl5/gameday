@@ -1,4 +1,4 @@
-import { Container } from "@chakra-ui/react";
+import { Container } from "@mantine/core";
 import React from "react";
 
 export const Dashboard: React.FC = () => {
