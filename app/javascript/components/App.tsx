@@ -1,9 +1,9 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Payments from "./Payments";
 import { Dashboard } from "./Dashboard";
 import { Nav } from "./Nav";
 import { Container } from "@mantine/core";
+import { Payments } from "./Payments/Payments";
 
 const App: React.FC = () => {
   return (
