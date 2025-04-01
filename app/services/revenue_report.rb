@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class RevenueReport
+class RevenueReport < BaseReport
   def initialize(start_date, end_date, payment_type = 'all')
     @start_date = start_date
     @end_date = end_date

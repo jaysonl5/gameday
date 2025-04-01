@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Dashboard } from "./Dashboard";
+import { Dashboard } from "./Dashboard/Dashboard";
 import { Nav } from "./Nav";
 import { Container } from "@mantine/core";
 import { Payments } from "./Payments/Payments";
