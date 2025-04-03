@@ -22,7 +22,7 @@ class RevenueReport < BaseReport
   private
 
   def fetch_payments
-    scope = Payment.where(created_at: @start_date..@end_date)
+    scope = Payment.where(created_at_api: @start_date.to_time.beginning_of_day..@end_date.to_time.end_of_day)
     
     case @payment_type
     when 'recurring'
@@ -42,7 +42,7 @@ class RevenueReport < BaseReport
     {
       by_source: payments.group(:source).sum(:amount),
       by_type: payments.group(:payment_type).sum(:amount),
-      by_month: payments.group("DATE_TRUNC('month', created_at)").sum(:amount),
+      by_month: payments.group("DATE_TRUNC('month', created_at_api)").sum(:amount),
       total_count: payments.count
     }
   end

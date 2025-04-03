@@ -5,8 +5,8 @@ class ExternalPaymentSyncService
 
   def sync
     oauth_data = fetch_oauth_data
-    Rails.logger.info("OAuth Response: #{oauth_data[:success]}")
-
+    Rails.logger.error("OAuth Response: #{oauth_data[:success]}")
+    return {status: "error", message: "Failed to fetch OAuth data"} unless oauth_data[:success]
     payment_data = fetch_payment_data(oauth_data)
     Rails.logger.info("Payment Records Count: #{payment_data&.length}")  # Log number of records
 
@@ -28,13 +28,15 @@ class ExternalPaymentSyncService
 
 
     consumer = OAuth::Consumer.new(consumer_key, consumer_secret, site: ENV['MX_BASE_URL'], scheme: :header, oauth_signature_method: 'HMAC-SHA1', oauth_version: '1.0', oauth_timestamp: Time.now.to_i.to_s)
+    Rails.logger.info("Consumer: #{consumer}")
     token = OAuth::AccessToken.new(consumer, access_token, access_token_secret)
 
-    oauth_response = token.get("/checkout/v3/payment?transactionType=Any&startDate=2024-01-22T14:30:45Z&endDate=2025-12-22T14:30:45Z&limit=6000&includeCustomer=true")
+    oauth_response = token.get("/checkout/v3/payment?transactionType=Any&startDate=2024-01-22T14:30:45Z&endDate=2025-08-22T14:30:45Z&limit=6000&includeCustomer=true")
 
     if oauth_response.code.to_i == 200
       { success: true, data: JSON.parse(oauth_response.body) }
     else
+      Rails.logger.error("OAuth Error: #{oauth_response.body}")
       {success: false, error: oauth_response.body }
     end
   end
