@@ -1,42 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
-import { Button, Flex, Image } from "@mantine/core";
+import { Box, Button, Flex, Image, NavLink } from "@mantine/core";
 
 export const Nav: React.FC = () => {
   const location = useLocation();
 
+  const [active, setActive] = useState("Dashboard");
+
   const getButtonVariant = (path: string) =>
     location.pathname === path ? "filled" : "subtle";
   return (
-    <Flex direction="row" justify="space-between" gap={4}>
-      <Image
-        w="150px"
-        fit="contain"
-        src="https://gamedaymenshealth.com/wp-content/uploads/2024/09/GD-Header-black.png"
-        alt="Logo"
-      />
-      <Button.Group>
-        <Button
-          color="var(--mantine-color-dark-8)"
+    <>
+      <Box>
+        <NavLink
+          color="dark"
           variant={getButtonVariant("/")}
           component={Link}
           to="/"
-        >
-          Dashboard <MdOutlineSpaceDashboard />
-        </Button>
+          leftSection={<MdOutlineSpaceDashboard size={20} />}
+          label="Dashboard"
+          onClick={() => setActive("Dashboard")}
+          active={active === "Dashboard"}
+        />
 
-        <Button
+        <NavLink
           component={Link}
           to="/Payments"
-          color="green"
+          color="dark"
           variant={getButtonVariant("/Payments")}
-        >
-          Payments <TbPigMoney />
-        </Button>
-      </Button.Group>
-    </Flex>
+          leftSection={<TbPigMoney size={20} />}
+          label="Payments"
+          onClick={() => setActive("Payments")}
+          active={active === "Payments"}
+        />
+      </Box>
+    </>
   );
 };

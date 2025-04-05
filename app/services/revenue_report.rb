@@ -38,8 +38,12 @@ class RevenueReport < BaseReport
     payments.sum(:amount)
   end
 
+
   def generate_payment_breakdown(payments)
     {
+      by_day: payments.group("DATE(created_at_api)", :source).sum(:amount).map { |(date, source), amount|
+      { date: date.to_s, source: source, amount: amount.to_f }
+    },
       by_source: payments.group(:source).sum(:amount),
       by_type: payments.group(:payment_type).sum(:amount),
       by_month: payments.group("DATE_TRUNC('month', created_at_api)").sum(:amount),

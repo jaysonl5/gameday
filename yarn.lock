@@ -170,10 +170,10 @@
   resolved "https://registry.yarnpkg.com/@floating-ui/utils/-/utils-0.2.9.tgz#50dea3616bc8191fb8e112283b49eaff03e78429"
   integrity sha512-MDWhGtE+eHw5JW7lq4qhc5yRLS11ERl1c7Z6Xd0a58DozHES6EnNNwUWbMiG4J9Cgj053Bhk8zvlhFYKVhULwg==
 
-"@mantine/charts@^7.17.2":
-  version "7.17.2"
-  resolved "https://registry.yarnpkg.com/@mantine/charts/-/charts-7.17.2.tgz#63961d2c0393324eaeee0c5f53235671455e98bc"
-  integrity sha512-ckB23pIqRjzysUz2EiWZD9AVyf7t0r7o7zfJbl01nzOezFgYq5RGeRoxvpcsfBC+YoSbB/43rjNcXtYhtA7QzA==
+"@mantine/charts@^7.17.3":
+  version "7.17.3"
+  resolved "https://registry.yarnpkg.com/@mantine/charts/-/charts-7.17.3.tgz#8ebe8246e1191754f8245a72394c767a5c6df479"
+  integrity sha512-YGx8hLi4E3yyiRx9fNAoPPF+YrFkLWM+fnzqKIVvRbWqMbUw920AU+K5XSDjPmNB7cuYWSVwxxA/hIstQ8x3VA==
 
 "@mantine/core@^7.17.2":
   version "7.17.2"

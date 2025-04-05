@@ -19,8 +19,8 @@ type RevenueCardProps = {
 export const RevenueCard = ({ label, value }: RevenueCardProps) => {
   return (
     <Card shadow="md" padding="xl" withBorder radius="md" key={label} mih={175}>
-      <Group>
-        <ThemeIcon radius="xl" color="indigo">
+      <Group justify="space-between" mb="xs">
+        <ThemeIcon radius="xl" color="teal.5">
           {iconMap[label] ?? null}
         </ThemeIcon>
         <Title order={4}>{label}</Title>

@@ -28,40 +28,50 @@ export const DateSelector = ({
 
   const [preset, setPreset] = useState("custom");
 
-  useEffect(() => {
-    if (preset === "this_month") {
-      setDateRange([
-        dayjs().startOf("month").toDate(),
-        dayjs().startOf("day").toDate(),
-      ]);
-    } else if (preset === "last_month") {
-      setDateRange([
-        dayjs().subtract(1, "month").startOf("month").toDate(),
-        dayjs().subtract(1, "month").endOf("month").toDate(),
-      ]);
-    } else if (preset === "last_year") {
-      setDateRange([
-        dayjs().subtract(1, "year").startOf("year").toDate(),
-        dayjs().subtract(1, "year").endOf("year").toDate(),
-      ]);
-    } else if (preset === "this_year") {
-      setDateRange([
-        dayjs().startOf("year").toDate(),
-        dayjs().endOf("year").toDate(),
-      ]);
-    } else if (preset === "custom") {
-      setDateRange([null, null]);
+  const getDateRangeForPreset = (
+    preset: string
+  ): [Date | null, Date | null] => {
+    switch (preset) {
+      case "this_month":
+        return [
+          dayjs().startOf("month").toDate(),
+          dayjs().startOf("day").toDate(),
+        ];
+      case "last_month":
+        return [
+          dayjs().subtract(1, "month").startOf("month").toDate(),
+          dayjs().subtract(1, "month").endOf("month").toDate(),
+        ];
+      case "this_year":
+        return [
+          dayjs().startOf("year").toDate(),
+          dayjs().endOf("year").toDate(),
+        ];
+      case "last_year":
+        return [
+          dayjs().subtract(1, "year").startOf("year").toDate(),
+          dayjs().subtract(1, "year").endOf("year").toDate(),
+        ];
+      case "custom":
+      default:
+        return [dayjs().startOf("day").toDate(), null];
     }
-  }, [preset]);
+  };
+
+  const handlePresetChange = (newPreset: string) => {
+    setPreset(newPreset);
+    setDateRange(getDateRangeForPreset(newPreset));
+  };
 
   return (
     <>
       <SegmentedControl
         value={preset}
-        onChange={setPreset}
+        onChange={handlePresetChange}
         data={presetOptions}
         fullWidth
         mb="md"
+        color="dark"
       />
       <DatePickerInput
         allowSingleDateInRange

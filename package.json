@@ -12,7 +12,7 @@
     "build": "esbuild app/javascript/application.tsx --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --loader:.js=jsx --platform=browser --external:fs --external:os --external:path --external:child_process --external:crypto --external:tty"
   },
   "dependencies": {
-    "@mantine/charts": "^7.17.2",
+    "@mantine/charts": "^7.17.3",
     "@mantine/core": "^7.17.2",
     "@mantine/dates": "^7.17.3",
     "@mantine/hooks": "^7.17.2",

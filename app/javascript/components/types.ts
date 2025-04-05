@@ -18,6 +18,11 @@ export type PaymentReport = {
   export type PaymentReportResponse = {
     total_revenue: string;
     payment_breakdown: {
+      by_day: {
+        [key: string]: {
+          [key: string]: number;
+        };
+      }
       by_source: {
         [key: string]: string;
       }
