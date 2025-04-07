@@ -10,6 +10,8 @@ type DateSelectorProps = {
   >;
   defaultStart?: dayjs.Dayjs | Date;
   defaultEnd?: dayjs.Dayjs | Date;
+  preset: string;
+  setPreset: React.Dispatch<React.SetStateAction<string>>;
 };
 
 export const DateSelector = ({
@@ -17,6 +19,8 @@ export const DateSelector = ({
   setDateRange,
   defaultStart,
   defaultEnd,
+  preset = "custom",
+  setPreset,
 }: DateSelectorProps) => {
   const presetOptions = [
     { label: "Custom", value: "custom" },
@@ -25,8 +29,6 @@ export const DateSelector = ({
     { label: "YTD", value: "this_year" },
     { label: "Previous Year", value: "last_year" },
   ];
-
-  const [preset, setPreset] = useState("custom");
 
   const getDateRangeForPreset = (
     preset: string
@@ -59,8 +61,8 @@ export const DateSelector = ({
   };
 
   const handlePresetChange = (newPreset: string) => {
-    setPreset(newPreset);
     setDateRange(getDateRangeForPreset(newPreset));
+    setPreset(newPreset);
   };
 
   return (
@@ -76,13 +78,8 @@ export const DateSelector = ({
       <DatePickerInput
         allowSingleDateInRange
         type="range"
-        value={
-          dateRange ??
-          (defaultStart && defaultEnd) ?? [defaultStart, defaultEnd]
-        }
-        onChange={([start, end]) => {
-          setDateRange([start, end]), setPreset("custom");
-        }}
+        value={dateRange}
+        onChange={setDateRange}
       />
     </>
   );

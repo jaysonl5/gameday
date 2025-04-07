@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { Container, Grid, Loader, Flex, Button } from "@mantine/core";
+import { Container, Grid, Loader, Flex, Button, Skeleton } from "@mantine/core";
 
 import { RevenueCard } from "./RevenueCards";
 import { DateSelector } from "./DateSelector";
@@ -14,6 +14,8 @@ export const Dashboard = () => {
     null,
     null,
   ]);
+
+  const [preset, setPreset] = useState("custom");
 
   const [shouldFetchPayments, setShouldFetchPayments] = useState(false);
 
@@ -62,28 +64,21 @@ export const Dashboard = () => {
     color: labelToColorMap[item.label] || "gray.6", // Default to gray if no color is defined
   }));
 
-  if (isLoading || syncLoading)
-    return (
-      <Container>
-        <Flex justify="center" align="center" style={{ height: "25vh" }}>
-          <Loader />
-        </Flex>
-      </Container>
-    );
-
   return (
     <Container size="xl">
-      <Grid>
-        <Grid.Col span={{ base: 12, md: 6, lg: 8 }}>
+      <Grid mb="md">
+        <Grid.Col span={{ base: 12, md: 8, lg: 8 }}>
           <DateSelector
             setDateRange={setDateRange}
             defaultStart={defaultStartDate}
             defaultEnd={defaultEndDate}
             dateRange={dateRange}
+            preset={preset}
+            setPreset={setPreset}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 12, md: 6, lg: 2 }} />
-        <Grid.Col span={2}>
+        <Grid.Col span={{ base: 0, md: 3, lg: 3 }} />
+        <Grid.Col span={1}>
           <Button
             color="teal"
             variant="filled"
@@ -97,24 +92,34 @@ export const Dashboard = () => {
       </Grid>
 
       <Grid>
-        <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
-          <RevenueCard label={"Total"} value={data?.total_revenue ?? "0"} />
-        </Grid.Col>
-
-        {salesBySource
-          .filter(
-            (item) => item.label === "Recurring" || item.label === "Invoice"
-          )
-          .map((item) => (
-            <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={item.label}>
-              <RevenueCard label={item.label} value={item.value} />
+        {!data || isLoading || syncLoading ? (
+          <>
+            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
+            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
+            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
+          </>
+        ) : (
+          <>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+              <RevenueCard label={"Total"} value={data?.total_revenue ?? "0"} />
             </Grid.Col>
-          ))}
+
+            {salesBySource
+              .filter(
+                (item) => item.label === "Recurring" || item.label === "Invoice"
+              )
+              .map((item) => (
+                <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={item.label}>
+                  <RevenueCard label={item.label} value={item.value} />
+                </Grid.Col>
+              ))}
+          </>
+        )}
       </Grid>
 
       <Grid>
         <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
-          <RevenueChart data={data} dateRange={dateRange} />
+          {/* <RevenueChart data={data} dateRange={dateRange} /> */}
         </Grid.Col>
       </Grid>
       {error && <p>Error loading report</p>}
