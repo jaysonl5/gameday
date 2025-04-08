@@ -1,19 +1,16 @@
-import dayjs from "dayjs";
-import useSWR from "swr";
-import { PaymentReportResponse } from "../../types";
-import { swrFetcher } from "../../../utils/swr-fetcher";
+import axios from "axios";
+import useSWRMutation from "swr/mutation";
 
-type useSyncPaymentsProps = {
-  shouldFetch: boolean;
+const syncPayments = async (url: string) => {
+  const res = await axios.get(url);
+  if (res.status !== 200) {
+    throw new Error("Failed to sync payments");
+  }
+  return res.data.json();
 };
 
-export const useSyncPayments = ({ shouldFetch }: useSyncPaymentsProps) => {
+export const useSyncPayments = () => {
   const apiUrl = `/api/v1/payments/sync`;
 
-  const { mutate, data, error, isLoading } = useSWR<PaymentReportResponse>(
-    shouldFetch ? apiUrl : null,
-    swrFetcher
-  );
-
-  return { mutate, data, error, isLoading };
+  return useSWRMutation(apiUrl, syncPayments);
 };

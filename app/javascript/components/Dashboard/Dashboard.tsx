@@ -18,18 +18,10 @@ export const Dashboard = () => {
 
   const [preset, setPreset] = useState("this_month");
 
-  const [shouldFetchPayments, setShouldFetchPayments] = useState(false);
-
-  const { mutate: syncPayements, isLoading: syncLoading } = useSyncPayments({
-    shouldFetch: shouldFetchPayments,
-  });
+  const { trigger: syncPayements, isMutating: syncLoading } = useSyncPayments();
 
   const handleClick = async () => {
-    if (shouldFetchPayments) {
-      syncPayements();
-    } else {
-      setShouldFetchPayments(true);
-    }
+    syncPayements();
   };
 
   const { data, error, isLoading } = usePaymentReport({ dateRange });
@@ -97,9 +89,24 @@ export const Dashboard = () => {
       <Grid>
         {!data || isLoading || syncLoading ? (
           <>
-            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
-            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
-            <Skeleton visible={isLoading} height={175} width="30%" mx={5} />
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
           </>
         ) : (
           <>
