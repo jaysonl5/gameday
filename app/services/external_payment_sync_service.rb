@@ -4,8 +4,19 @@ class ExternalPaymentSyncService
   end
 
   def sync
-    oauth_data = fetch_oauth_data
-    Rails.logger.error("OAuth Response: #{oauth_data[:success]}")
+    oauth_token = OauthTokenService.fetch_token
+
+    start_date = CGI.escape("2024-01-22T14:30:45Z")
+    end_date = CGI.escape("2025-08-22T14:30:45Z")
+    response = oauth_token.get("/checkout/v3/payment?transactionType=Any&startDate=#{start_date}&endDate=#{end_date}&limit=6000&includeCustomer=true")
+
+    oauth_data = if response.code.to_i == 200
+      Rails.logger.info("OAuth Response: #{response.body}")
+      { success: true, data: JSON.parse(response.body) }
+    else
+      Rails.logger.error("OAuth Error: #{response.body}")
+      { success: false, error: response.body }
+    end
     return {status: "error", message: "Failed to fetch OAuth data"} unless oauth_data[:success]
     payment_data = fetch_payment_data(oauth_data)
     Rails.logger.info("Payment Records Count: #{payment_data&.length}")  # Log number of records
@@ -19,27 +30,6 @@ class ExternalPaymentSyncService
   end
 
   private
-
-  def fetch_oauth_data
-    consumer_key = ENV['MX_CONSUMER_KEY']
-    consumer_secret = ENV['MX_CONSUMER_SECRET']
-    access_token = ENV['MX_ACCESS_TOKEN']
-    access_token_secret = ENV['MX_TOKEN_SECRET']
-
-
-    consumer = OAuth::Consumer.new(consumer_key, consumer_secret, site: ENV['MX_BASE_URL'], scheme: :header, oauth_signature_method: 'HMAC-SHA1', oauth_version: '1.0', oauth_timestamp: Time.now.to_i.to_s)
-    Rails.logger.info("Consumer: #{consumer}")
-    token = OAuth::AccessToken.new(consumer, access_token, access_token_secret)
-
-    oauth_response = token.get("/checkout/v3/payment?transactionType=Any&startDate=2024-01-22T14:30:45Z&endDate=2025-08-22T14:30:45Z&limit=6000&includeCustomer=true")
-
-    if oauth_response.code.to_i == 200
-      { success: true, data: JSON.parse(oauth_response.body) }
-    else
-      Rails.logger.error("OAuth Error: #{oauth_response.body}")
-      {success: false, error: oauth_response.body }
-    end
-  end
 
   def fetch_payment_data(oauth_data)
     Rails.logger.info("Fetching payment data")
