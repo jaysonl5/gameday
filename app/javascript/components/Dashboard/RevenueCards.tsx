@@ -20,10 +20,12 @@ export const RevenueCard = ({ label, value }: RevenueCardProps) => {
   return (
     <Card shadow="md" padding="xl" withBorder radius="md" key={label} mih={175}>
       <Group justify="space-between" mb="xs">
+        <Title c="gray" order={4}>
+          {label}
+        </Title>
         <ThemeIcon radius="xl" color="teal.5">
           {iconMap[label] ?? null}
         </ThemeIcon>
-        <Title order={4}>{label}</Title>
       </Group>
       <Title order={2}>{formatCurrency(value)}</Title>
     </Card>

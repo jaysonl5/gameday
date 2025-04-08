@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { Container, Grid, Loader, Flex, Button, Skeleton } from "@mantine/core";
+import { Container, Grid, Button, Skeleton, Title } from "@mantine/core";
 
 import { RevenueCard } from "./RevenueCards";
 import { DateSelector } from "./DateSelector";
@@ -8,23 +8,21 @@ import { usePaymentReport } from "./hooks/usePaymentReport";
 import { RevenueChart } from "./RevenueChart";
 import { useSyncPayments } from "./hooks/useSyncPayments";
 import { FaSyncAlt } from "react-icons/fa";
+import { DATE_PRESETS, DatePreset } from "../../utils/constants";
 
 export const Dashboard = () => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
-    null,
-    null,
+    DATE_PRESETS.this_month.start().toDate(),
+    DATE_PRESETS.this_month.end().toDate(),
   ]);
 
-  const [preset, setPreset] = useState("custom");
+  const [preset, setPreset] = useState("this_month");
 
   const [shouldFetchPayments, setShouldFetchPayments] = useState(false);
 
-  const {
-    mutate: syncPayements,
-    data: syncData,
-    error: syncErrors,
-    isLoading: syncLoading,
-  } = useSyncPayments({ shouldFetch: shouldFetchPayments });
+  const { mutate: syncPayements, isLoading: syncLoading } = useSyncPayments({
+    shouldFetch: shouldFetchPayments,
+  });
 
   const handleClick = async () => {
     if (shouldFetchPayments) {
@@ -66,6 +64,11 @@ export const Dashboard = () => {
 
   return (
     <Container size="xl">
+      <Grid mb="lg">
+        <Grid.Col>
+          <Title order={1}>Dashboard</Title>
+        </Grid.Col>
+      </Grid>
       <Grid mb="md">
         <Grid.Col span={{ base: 12, md: 8, lg: 8 }}>
           <DateSelector
