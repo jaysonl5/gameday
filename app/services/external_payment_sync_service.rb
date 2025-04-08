@@ -5,10 +5,7 @@ class ExternalPaymentSyncService
 
   def sync
     oauth_token = OauthTokenService.fetch_token
-
-    start_date = CGI.escape("2024-01-22T14:30:45Z")
-    end_date = CGI.escape("2025-08-22T14:30:45Z")
-    response = oauth_token.get("/checkout/v3/payment?transactionType=Any&startDate=#{start_date}&endDate=#{end_date}&limit=6000&includeCustomer=true")
+    response = oauth_token.get(ENV['MX_SYNC_URL'])
 
     oauth_data = if response.code.to_i == 200
       Rails.logger.info("OAuth Response: #{response.body}")
