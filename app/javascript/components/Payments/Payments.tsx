@@ -1,10 +1,17 @@
+import { Container, Grid, Title } from "@mantine/core";
 import React from "react";
 
 export const Payments = () => {
   return (
-    <div>
-      <h1>Payments</h1>
-      <p>This is the Payments component.</p>
-    </div>
+    <Container size="xl">
+      <Grid mb="lg">
+        <Grid.Col>
+          <Title order={1}>Payments</Title>
+        </Grid.Col>
+      </Grid>
+      <p>
+        <i>Coming soon...</i>
+      </p>
+    </Container>
   );
 };
