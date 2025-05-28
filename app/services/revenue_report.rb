@@ -35,7 +35,10 @@ class RevenueReport < BaseReport
   end
 
   def calculate_total_revenue(payments)
-    payments.sum(:amount)
+    sales_total = payments.where(status: "Settled", payment_type: 'sale').sum(:amount)
+    refunds_total = payments.where(status: "Settled", payment_type: 'refund').sum(:amount)
+    
+    sales_total - refunds_total
   end
 
 
