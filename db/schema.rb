@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_01_05_065306) do
+ActiveRecord::Schema[7.0].define(version: 2025_07_08_130521) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -49,6 +49,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_01_05_065306) do
     t.string "issuer_response_code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "recurring", default: false, null: false
     t.index ["api_id"], name: "index_payments_on_api_id"
   end
 

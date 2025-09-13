@@ -1,7 +1,7 @@
 class Payment < ApplicationRecord
   validates :api_id, presence: true, uniqueness: true
 
-  scope :recurring, -> { where(source: 'Recurring') }
+  scope :recurring, -> { where(recurring: true) }
   scope :returned, -> { where(payment_type: 'Return')}
   #statuses
   scope :approved, -> { where(status: 'Settled') }

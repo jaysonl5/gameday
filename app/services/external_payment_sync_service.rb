@@ -65,7 +65,7 @@ class ExternalPaymentSyncService
     current_invoice_no = payment_record["invoice"]
     existing_rejected_recurring_payment = Payment.declined.recurring.where(invoice: current_invoice_no).where.not(api_id: payment_record["id"]).first
     existing_approved_recurring_payment = Payment.approved.recurring.where(invoice: current_invoice_no).where.not(api_id: payment_record["id"]).first
-    existing_voided_recurring_payment = Payment.voided.recurring.where(invoice: current_invoice_no).where.not(api_id: payment_record).first
+    existing_voided_recurring_payment = Payment.voided.recurring.where(invoice: current_invoice_no).where.not(api_id: payment_record["id"]).first
 
     if payment_record["id"].present?
       Payment.find_or_initialize_by(api_id: payment_record["id"]).tap do |payment|
@@ -107,7 +107,7 @@ class ExternalPaymentSyncService
             payment.source = "Recurring"
             Rails.logger.info "Updated Payment #{payment.id} to Recurring since it has a declined recurring payment with the same invoice number"
           elsif existing_approved_recurring_payment
-            if payment_record["payment_type"] = 'Return' 
+            if payment_record["payment_type"] == 'Return' 
               payment.source = "Recurring"
               Rails.logger.info "Updated Payment #{payment.id} to Recurring since it is a return for a recurring payment with the same invoice number"
             end
@@ -117,6 +117,10 @@ class ExternalPaymentSyncService
           else
             Rails.logger.info "No other recurring payments found for invoice number #{current_invoice_no}"
           end
+          
+          # Set recurring boolean field based on source
+          payment.recurring = (payment.source == 'Recurring')
+          
           Rails.logger.info "Payment #{payment.id} saving"
           payment.save!
       end

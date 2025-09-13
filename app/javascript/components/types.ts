@@ -43,5 +43,43 @@ export type PaymentReport = {
     start_date: string;
     end_date: string;
   };
+
+  export type Payment = {
+    id: number;
+    api_id: string;
+    amount: number;
+    status: string;
+    payment_type: string;
+    source: string;
+    recurring: boolean;
+    tender_type: string;
+    created_at_api: string;
+    updated_at: string;
+    created_at: string;
+  };
+
+  export type PaginationMetadata = {
+    current_page: number;
+    per_page: number;
+    total_pages: number;
+    total_count: number;
+  };
+
+  export type PaginatedPaymentsResponse = {
+    data: Payment[];
+    pagination: PaginationMetadata;
+  };
+
+  export type PaymentsListParams = {
+    page?: number;
+    per_page?: number;
+    start_date?: string;
+    end_date?: string;
+    payment_type?: string;
+    sort_by?: string;
+    sort_direction?: 'asc' | 'desc';
+  };
+
+  export type SortField = 'created_at_api' | 'amount' | 'tender_type' | 'payment_type' | 'source';
   
   

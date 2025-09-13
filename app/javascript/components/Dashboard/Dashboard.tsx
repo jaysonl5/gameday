@@ -7,6 +7,7 @@ import { DateSelector } from "./DateSelector";
 import { usePaymentReport } from "./hooks/usePaymentReport";
 import { RevenueChart } from "./RevenueChart";
 import { useSyncPayments } from "./hooks/useSyncPayments";
+import { PaymentsTable } from "./PaymentsTable";
 import { FaSyncAlt } from "react-icons/fa";
 import { DATE_PRESETS, DatePreset } from "../../utils/constants";
 
@@ -132,6 +133,16 @@ export const Dashboard = () => {
           {/* <RevenueChart data={data} dateRange={dateRange} /> */}
         </Grid.Col>
       </Grid>
+
+      <Grid mt="lg">
+        <Grid.Col>
+          <PaymentsTable 
+            dateRange={dateRange} 
+            isLoading={isLoading || syncLoading}
+          />
+        </Grid.Col>
+      </Grid>
+      
       {error && <p>Error loading report</p>}
     </Container>
   );
