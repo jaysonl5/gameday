@@ -10,9 +10,37 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_07_08_130521) do
+ActiveRecord::Schema[7.0].define(version: 2025_09_13_201502) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "patient_census_entries", force: :cascade do |t|
+    t.date "date", null: false
+    t.string "patient_name", null: false
+    t.string "patient_result", null: false
+    t.string "mail_out_in_clinic"
+    t.decimal "in_clinic_dose_ml", precision: 5, scale: 2
+    t.string "med_order_made"
+    t.string "lab_call_scheduled"
+    t.string "monthly_contract_made"
+    t.string "annual_lab_contract"
+    t.string "consents_signed"
+    t.string "in_clinic_appt_made"
+    t.string "mail_out_appt_made"
+    t.text "notes"
+    t.string "lead_source"
+    t.text "plan_notes"
+    t.integer "rate"
+    t.text "extra_info"
+    t.string "p_or_other"
+    t.string "phone_number"
+    t.text "why_a_loss"
+    t.json "plan"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["date"], name: "index_patient_census_entries_on_date"
+    t.index ["patient_result"], name: "index_patient_census_entries_on_patient_result"
+  end
 
   create_table "payments", force: :cascade do |t|
     t.datetime "created_at_api"

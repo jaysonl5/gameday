@@ -9,6 +9,7 @@ Rails.application.routes.draw do
          get :report
        end
      end
+     resources :patient_census_entries, only: [:index, :create, :show, :update, :destroy]
    end
   end
 

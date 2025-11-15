@@ -38,6 +38,10 @@ gem "rack-cors"
 gem 'dotenv-rails', groups: [:development, :test]
 gem 'oauth'
 
+# Google Sheets API integration
+gem 'google-apis-sheets_v4'
+gem 'googleauth'
+
 # # Bundling
 gem 'jsbundling-rails'
 # gem 'cssbundling-rails'

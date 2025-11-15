@@ -4,6 +4,7 @@ import { Dashboard } from "./Dashboard/Dashboard";
 import { Nav } from "./Nav";
 import { Box, Container, Grid, Image } from "@mantine/core";
 import { Payments } from "./Payments/Payments";
+import { PatientCensus } from "./PatientCensus/PatientCensus";
 import { useMediaQuery } from "@mantine/hooks";
 
 const App: React.FC = () => {
@@ -36,6 +37,7 @@ const App: React.FC = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/Payments" element={<Payments />} />
+              <Route path="/PatientCensus" element={<PatientCensus />} />
             </Routes>
           </Grid.Col>
         </Grid>
