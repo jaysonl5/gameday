@@ -81,6 +81,10 @@ test:
 #
 production:
   <<: *default
+  adapter: postgresql
+  encoding: unicode
   database: gameday_production
-  username: gameday
-  password: <%= ENV["GAMEDAY_DATABASE_PASSWORD"] %>
+  username: gameday-admin
+  password: <%= ENV["PGPASSWORD"] %>
+  host: 127.0.0.1
+  port: 5432
