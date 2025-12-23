@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { Container, Grid, Button, Skeleton, Title } from "@mantine/core";
+import { Container, Grid, Button, Skeleton, Title, Box, Flex, Card, Paper } from "@mantine/core";
 
 import { RevenueCard } from "./RevenueCards";
 import { DateSelector } from "./DateSelector";
@@ -8,8 +8,10 @@ import { usePaymentReport } from "./hooks/usePaymentReport";
 import { RevenueChart } from "./RevenueChart";
 import { useSyncPayments } from "./hooks/useSyncPayments";
 import { PaymentsTable } from "./PaymentsTable";
-import { FaSyncAlt } from "react-icons/fa";
+import { FaDashcube, FaSyncAlt } from "react-icons/fa";
 import { DATE_PRESETS, DatePreset } from "../../utils/constants";
+import { FlaggedTitle } from "../Shared/FlaggedTitle";
+import { MdOutlineSpaceDashboard } from "react-icons/md";
 
 export const Dashboard = () => {
   const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
@@ -32,16 +34,16 @@ export const Dashboard = () => {
 
   const salesByType = data?.payment_breakdown.by_type
     ? Object.entries(data.payment_breakdown.by_type).map(([key, value]) => ({
-        label: key,
-        value: value,
-      }))
+      label: key,
+      value: value,
+    }))
     : [];
 
   const salesBySource = data?.payment_breakdown.by_source
     ? Object.entries(data.payment_breakdown.by_source).map(([key, value]) => ({
-        label: key,
-        value: value,
-      }))
+      label: key,
+      value: value,
+    }))
     : [];
 
   const labelToColorMap: Record<string, string> = {
@@ -57,13 +59,10 @@ export const Dashboard = () => {
 
   return (
     <Container size="xl">
-      <Grid mb="lg">
-        <Grid.Col>
-          <Title order={1}>Dashboard</Title>
-        </Grid.Col>
-      </Grid>
+      <Paper shadow="sm" w={'100%'} p={{ base: 'sm', md: 'lg' }} radius="md" mb="md">
+      <FlaggedTitle titleText="Dashboard" leftIcon={MdOutlineSpaceDashboard} />
       <Grid mb="md">
-        <Grid.Col span={{ base: 12, md: 8, lg: 8 }}>
+        <Grid.Col span={{ base: 12, md: 8}}>
           <DateSelector
             setDateRange={setDateRange}
             defaultStart={defaultStartDate}
@@ -73,8 +72,8 @@ export const Dashboard = () => {
             setPreset={setPreset}
           />
         </Grid.Col>
-        <Grid.Col span={{ base: 0, md: 3, lg: 3 }} />
-        <Grid.Col span={1}>
+        <Grid.Col span={{ base: 0, md: 1, lg: 1 }} />
+        <Grid.Col span={{ base: 12, md: 3, lg: 3 }}>
           <Button
             color="teal"
             variant="filled"
@@ -136,14 +135,15 @@ export const Dashboard = () => {
 
       <Grid mt="lg">
         <Grid.Col>
-          <PaymentsTable 
-            dateRange={dateRange} 
+          <PaymentsTable
+            dateRange={dateRange}
             isLoading={isLoading || syncLoading}
           />
         </Grid.Col>
       </Grid>
-      
+
       {error && <p>Error loading report</p>}
+      </Paper>
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import { MdOutlineSpaceDashboard } from "react-icons/md";
 import { TbPigMoney } from "react-icons/tb";
-import { FaUserInjured } from "react-icons/fa";
+import { FaUserInjured, FaUserPlus } from "react-icons/fa";
 import { Box, Button, Flex, Image, NavLink } from "@mantine/core";
 
 export const Nav: React.FC = () => {
@@ -15,6 +15,9 @@ export const Nav: React.FC = () => {
     location.pathname === path ? "filled" : "subtle";
   return (
     <>
+      <Box my={10}> 
+        <img src="/assets/images/logo.svg" alt="Logo" width={"100%"} />
+      </Box>
       <Box>
         <NavLink
           color="dark"
@@ -25,17 +28,7 @@ export const Nav: React.FC = () => {
           label="Dashboard"
           onClick={() => setActive("Dashboard")}
           active={active === "Dashboard"}
-        />
-
-        <NavLink
-          component={Link}
-          to="/Payments"
-          color="dark"
-          variant={getButtonVariant("/Payments")}
-          leftSection={<TbPigMoney size={20} />}
-          label="Payments"
-          onClick={() => setActive("Payments")}
-          active={active === "Payments"}
+          disabled={true}
         />
 
         <NavLink
@@ -43,7 +36,7 @@ export const Nav: React.FC = () => {
           to="/PatientCensus"
           color="dark"
           variant={getButtonVariant("/PatientCensus")}
-          leftSection={<FaUserInjured size={20} />}
+          leftSection={<FaUserPlus size={20} />}
           label="Patient Census"
           onClick={() => setActive("PatientCensus")}
           active={active === "PatientCensus"}
