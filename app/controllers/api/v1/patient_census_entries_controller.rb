@@ -1,6 +1,6 @@
 class Api::V1::PatientCensusEntriesController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :set_patient_census_entry, only: [:show, :update, :destroy]
+  before_action :set_patient_census_entry, only: [:show, :update, :destroy, :mark_called]
 
   def index
     @entries = PatientCensusEntry.all.order(date: :desc)
@@ -17,8 +17,9 @@ class Api::V1::PatientCensusEntriesController < ApplicationController
   end
 
   def create
+    authorize PatientCensusEntry
     @entry = PatientCensusEntry.new(patient_census_entry_params)
-    
+
     if @entry.save
       # Sync to Google Sheets asynchronously
       sync_to_google_sheets(@entry)
@@ -29,6 +30,7 @@ class Api::V1::PatientCensusEntriesController < ApplicationController
   end
 
   def update
+    authorize @entry
     if @entry.update(patient_census_entry_params)
       render json: @entry
     else
@@ -37,8 +39,22 @@ class Api::V1::PatientCensusEntriesController < ApplicationController
   end
 
   def destroy
+    authorize @entry
     @entry.destroy
     head :no_content
+  end
+
+  def stats
+    authorize PatientCensusEntry
+    filter = params[:filter]&.to_sym || :this_week
+    service = PatientCensusStatsService.new(filter: filter)
+    render json: service.stats
+  end
+
+  def mark_called
+    authorize @entry, :mark_called?
+    @entry.update(call_logged_at: Time.current)
+    render json: @entry
   end
 
   private
