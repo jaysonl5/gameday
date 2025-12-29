@@ -2,20 +2,15 @@
 <html lang="en">
   <head>
     <title>GameDay Men's Health</title>
-    <meta charSet="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0"
-    />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <link rel="stylesheet" href="/assets/application.css" media="all" />
+    <%= stylesheet_link_tag "application", media: "all" %>
   </head>
   <body>
     <%= yield %>
-    <div id="root">
-    </div>
-    <script type="module" src="/assets/application.js" defer></script>
-
+    <div id="root"></div>
+    <%= javascript_include_tag "application", type: "module", defer: true %>
   </body>
 </html>
