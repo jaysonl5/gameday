@@ -10,20 +10,14 @@ import {
   Radio,
   MultiSelect,
   Stack,
-  Card,
-  Title,
   Notification,
-  Flex,
   Grid,
   Divider,
-  Container,
   SegmentedControl
 } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
 import { PatientCensusFormData } from "../types";
 import axios from "axios";
-import { FlaggedTitle } from "../Shared/FlaggedTitle";
-import { FaUserPlus } from "react-icons/fa";
 
 const PLAN_OPTIONS = [
   'TRT', 'Enclomiphene', 'Peptides', 'Semaglutide', 'Tirzepatide',
@@ -350,10 +344,7 @@ export const PatientCensusForm: React.FC<PatientCensusFormProps> = ({ onSuccess 
   );
 
   return (
-    <Container size={"xl"}>
-    <Card shadow="sm" padding="xl">
-      <FlaggedTitle titleText="Patient Census" leftIcon={FaUserPlus} />
-
+    <Box>
       {notification && (
         <Notification
           color={notification.type === 'success' ? 'green' : 'red'}
@@ -465,9 +456,8 @@ export const PatientCensusForm: React.FC<PatientCensusFormProps> = ({ onSuccess 
 
           </Grid.Col>
         </Grid>
-        
+
       </form>
-    </Card>
-    </Container>
+    </Box>
   );
 };

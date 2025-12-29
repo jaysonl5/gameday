@@ -1,17 +1,149 @@
-import { Container, Grid, Title } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
+import dayjs from "dayjs";
+import { Container, Grid, Button, Skeleton, Title, Box, Flex, Card, Paper } from "@mantine/core";
+
+import { RevenueCard } from "./RevenueCards";
+import { DateSelector } from "./DateSelector";
+import { usePaymentReport } from "./hooks/usePaymentReport";
+import { RevenueChart } from "./RevenueChart";
+import { useSyncPayments } from "./hooks/useSyncPayments";
+import { PaymentsTable } from "./PaymentsTable";
+import { FaSyncAlt } from "react-icons/fa";
+import { DATE_PRESETS, DatePreset } from "../../utils/constants";
+import { FlaggedTitle } from "../Shared/FlaggedTitle";
+import { MdPayment } from "react-icons/md";
 
 export const Payments = () => {
+  const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([
+    DATE_PRESETS.this_month.start().toDate(),
+    DATE_PRESETS.this_month.end().toDate(),
+  ]);
+
+  const [preset, setPreset] = useState("this_month");
+
+  const { trigger: syncPayements, isMutating: syncLoading } = useSyncPayments();
+
+  const handleClick = async () => {
+    syncPayements();
+  };
+
+  const { data, error, isLoading } = usePaymentReport({ dateRange });
+
+  const defaultStartDate = dayjs(data?.date_range.start_date);
+  const defaultEndDate = dayjs(data?.date_range.end_date);
+
+  const salesByType = data?.payment_breakdown.by_type
+    ? Object.entries(data.payment_breakdown.by_type).map(([key, value]) => ({
+      label: key,
+      value: value,
+    }))
+    : [];
+
+  const salesBySource = data?.payment_breakdown.by_source
+    ? Object.entries(data.payment_breakdown.by_source).map(([key, value]) => ({
+      label: key,
+      value: value,
+    }))
+    : [];
+
+  const labelToColorMap: Record<string, string> = {
+    Recurring: "indigo.6",
+    Invoice: "blue.6",
+    Other: "teal.6", // Add more labels as needed
+  };
+
+  const series = salesBySource.map((item) => ({
+    name: item.label,
+    color: labelToColorMap[item.label] || "gray.6", // Default to gray if no color is defined
+  }));
+
   return (
     <Container size="xl">
-      <Grid mb="lg">
-        <Grid.Col>
-          <Title order={1}>Payments</Title>
+      <Paper shadow="sm" w={'100%'} p={{ base: 'sm', md: 'lg' }} radius="md" mb="md">
+      <FlaggedTitle titleText="Payments" leftIcon={MdPayment} />
+      <Grid mb="md">
+        <Grid.Col span={{ base: 12, md: 8}}>
+          <DateSelector
+            setDateRange={setDateRange}
+            defaultStart={defaultStartDate}
+            defaultEnd={defaultEndDate}
+            dateRange={dateRange}
+            preset={preset}
+            setPreset={setPreset}
+          />
+        </Grid.Col>
+        <Grid.Col span={{ base: 0, md: 1, lg: 1 }} />
+        <Grid.Col span={{ base: 12, md: 3, lg: 3 }}>
+          <Button
+            color="teal"
+            variant="filled"
+            loading={syncLoading}
+            onClick={handleClick}
+            leftSection={<FaSyncAlt size={16} />}
+          >
+            Refresh Data
+          </Button>
         </Grid.Col>
       </Grid>
-      <p>
-        <i>Coming soon...</i>
-      </p>
+
+      <Grid>
+        {!data || isLoading || syncLoading ? (
+          <>
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
+            <Skeleton
+              visible={!data || isLoading || syncLoading}
+              height={175}
+              width="30%"
+              mx={5}
+            />
+          </>
+        ) : (
+          <>
+            <Grid.Col span={{ base: 12, md: 6, lg: 4 }}>
+              <RevenueCard label={"Total"} value={data?.total_revenue ?? "0"} />
+            </Grid.Col>
+
+            {salesBySource
+              .filter(
+                (item) => item.label === "Recurring" || item.label === "Invoice"
+              )
+              .map((item) => (
+                <Grid.Col span={{ base: 12, md: 6, lg: 4 }} key={item.label}>
+                  <RevenueCard label={item.label} value={item.value} />
+                </Grid.Col>
+              ))}
+          </>
+        )}
+      </Grid>
+
+      <Grid>
+        <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
+          {/* <RevenueChart data={data} dateRange={dateRange} /> */}
+        </Grid.Col>
+      </Grid>
+
+      <Grid mt="lg">
+        <Grid.Col>
+          <PaymentsTable
+            dateRange={dateRange}
+            isLoading={isLoading || syncLoading}
+          />
+        </Grid.Col>
+      </Grid>
+
+      {error && <p>Error loading report</p>}
+      </Paper>
     </Container>
   );
 };

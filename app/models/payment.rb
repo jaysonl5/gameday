@@ -1,4 +1,6 @@
 class Payment < ApplicationRecord
+  has_paper_trail
+
   validates :api_id, presence: true, uniqueness: true
 
   scope :recurring, -> { where(recurring: true) }

@@ -1,10 +1,11 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Dashboard } from "./Dashboard/Dashboard";
+import { DashboardHome } from "./Dashboard/DashboardHome";
 import { Nav } from "./Nav";
 import { Box, Container, Grid, Image } from "@mantine/core";
 import { Payments } from "./Payments/Payments";
 import { PatientCensus } from "./PatientCensus/PatientCensus";
+import { Settings } from "./Settings/Settings";
 import { useMediaQuery } from "@mantine/hooks";
 const App: React.FC = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
@@ -24,9 +25,10 @@ const App: React.FC = () => {
           </Grid.Col>
           <Grid.Col span={{ base: 12, md: 8, lg: 8 }}>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/Payments" element={<Payments />} />
-              <Route path="/PatientCensus" element={<PatientCensus />} />
+              <Route path="/" element={<DashboardHome />} />
+              <Route path="/payments" element={<Payments />} />
+              <Route path="/patient-census" element={<PatientCensus />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </Grid.Col>
         </Grid>

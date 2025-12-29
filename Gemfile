@@ -42,6 +42,17 @@ gem 'oauth'
 gem 'google-apis-sheets_v4'
 gem 'googleauth'
 
+# Authentication & Authorization
+gem 'devise'
+gem 'omniauth-google-oauth2', '~> 1.1'
+gem 'omniauth-rails_csrf_protection'
+gem 'rolify'
+gem 'pundit'
+
+# Security & Compliance (HIPAA)
+gem 'paper_trail'
+gem 'attr_encrypted'
+
 # # Bundling
 gem 'jsbundling-rails'
 # gem 'cssbundling-rails'

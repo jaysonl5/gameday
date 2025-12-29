@@ -1,9 +1,11 @@
 module Api
   module V1
     class PaymentsController < ApplicationController
+      skip_before_action :verify_authenticity_token
       require 'net/http'
 
       def index
+        authorize Payment
         if params[:fetch_data] == "true"
           fetch_payment_data
           return
@@ -59,7 +61,8 @@ module Api
         }, status: :ok
       end
 
-      def sync 
+      def sync
+        authorize Payment
         result = ExternalPaymentSyncService.sync
 
         if result[:status] == "success"
@@ -68,9 +71,9 @@ module Api
           render json: {message: "Failed to sync payments"}, status: :unprocessable_entity
         end
       end
-    
 
       def report
+        authorize Payment
         start_date = params[:start_date] || 1.month.ago.beginning_of_month
         end_date = params[:end_date] || Time.current
         payment_type = params[:payment_type] || 'all'

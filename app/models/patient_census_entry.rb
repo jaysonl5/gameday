@@ -1,4 +1,14 @@
 class PatientCensusEntry < ApplicationRecord
+  has_paper_trail
+
+  # Encrypt PHI fields
+  attr_encrypted :patient_name, key: ENV['ENCRYPTION_KEY']
+  attr_encrypted :phone_number, key: ENV['ENCRYPTION_KEY']
+  attr_encrypted :notes, key: ENV['ENCRYPTION_KEY']
+  attr_encrypted :plan_notes, key: ENV['ENCRYPTION_KEY']
+  attr_encrypted :extra_info, key: ENV['ENCRYPTION_KEY']
+  attr_encrypted :why_a_loss, key: ENV['ENCRYPTION_KEY']
+
   validates :date, presence: true
   validates :patient_name, presence: true
   validates :patient_result, presence: true, inclusion: { in: %w[Win Thinker Loss] }

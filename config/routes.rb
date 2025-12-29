@@ -1,4 +1,17 @@
 Rails.application.routes.draw do
+  devise_for :users, controllers: {
+    omniauth_callbacks: 'users/omniauth_callbacks'
+  }
+
+  namespace :admin do
+    resources :users, only: [:index] do
+      member do
+        post :approve
+        delete :reject
+      end
+    end
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   namespace :api do
@@ -9,7 +22,19 @@ Rails.application.routes.draw do
          get :report
        end
      end
-     resources :patient_census_entries, only: [:index, :create, :show, :update, :destroy]
+     resources :patient_census_entries, only: [:index, :create, :show, :update, :destroy] do
+       collection do
+         get :stats
+       end
+       member do
+         post :mark_called
+       end
+     end
+     resources :users, only: [:index] do
+       member do
+         patch :update_role, path: 'role'
+       end
+     end
    end
   end
 
