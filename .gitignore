@@ -38,7 +38,12 @@
 
 /config/credentials/production.key
 
-CLAUDE.md
+# Google Cloud credentials (secrets)
 gameday-dev-472020-0b6d0c2120f2.json
+
+# OS files
 .DS_Store
-.DS_Store
+
+# Optional documentation
+CLAUDE.md
+DEPLOY.md

@@ -9,13 +9,13 @@
     />
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <link rel="stylesheet" href="/assets/application.css" media="all" />
   </head>
   <body>
     <%= yield %>
     <div id="root">
     </div>
-    <%= javascript_include_tag "application", type: "module", "data-turbo-track": "reload", defer: true %>
+    <script type="module" src="/assets/application.js" defer></script>
 
   </body>
 </html>

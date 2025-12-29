@@ -1,32 +1,58 @@
-# config/puma.rb
+# config/puma.rb - Works in both development and production
 
-# Set the Rails environment
-rails_env = ENV.fetch("RAILS_ENV") { "production" }
+# Determine environment
+rails_env = ENV.fetch("RAILS_ENV") { "development" }
 environment rails_env
 
-# Set the directory where the app lives
-app_dir = File.expand_path("../..", __FILE__)
-shared_dir = "#{app_dir}/shared"
+# Thread configuration
+max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
+min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
+threads min_threads_count, max_threads_count
 
-# Bind to a Unix socket (for NGINX)
-bind "unix:///home/ubuntu/gameday/tmp/sockets/puma.sock"
+# Environment-specific configuration
+if rails_env == "production"
+  # PRODUCTION CONFIGURATION
 
-# Set PID and state file paths
-pidfile "#{app_dir}/tmp/pids/puma.pid"
-state_path "#{app_dir}/tmp/pids/puma.state"
+  # App directory
+  app_dir = File.expand_path("../..", __FILE__)
 
-# Logging
-stdout_redirect "/home/ubuntu/gameday/log/puma.stdout.log", "/home/ubuntu/gameday/log/puma.stderr.log", true
+  # Bind to Unix socket for nginx
+  bind "unix://#{app_dir}/tmp/sockets/puma.sock"
 
-# Puma workers and threads (tune based on your VPS size)
-workers 0
-threads 1, 6
+  # PID and state files
+  pidfile "#{app_dir}/tmp/pids/puma.pid"
+  state_path "#{app_dir}/tmp/pids/puma.state"
 
-# Daemonize (optional – can be managed via systemd instead)
-# daemonize true
+  # Logging
+  stdout_redirect "#{app_dir}/log/puma.stdout.log",
+                  "#{app_dir}/log/puma.stderr.log",
+                  true
 
-# Preload the app for better worker boot times
-#preload_app!
+  # Workers and threads (tune based on server resources)
+  workers ENV.fetch("WEB_CONCURRENCY") { 2 }
+  threads 1, 6
 
-# Allow Puma to be restarted by `rails restart` command
+  # Preload app for better performance
+  preload_app!
+
+  # Worker timeout
+  worker_timeout 60
+
+else
+  # DEVELOPMENT CONFIGURATION
+
+  # Bind to TCP port (accessible from browser)
+  port ENV.fetch("PORT") { 3000 }
+
+  # PID file
+  pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+
+  # No workers in development (simpler debugging)
+  # workers 0 is implicit
+
+  # Longer timeout for debugging
+  worker_timeout 3600 if ENV.fetch("RAILS_ENV", "development") == "development"
+end
+
+# Common configuration (both environments)
 plugin :tmp_restart
