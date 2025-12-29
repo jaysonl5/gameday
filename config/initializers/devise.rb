@@ -319,6 +319,5 @@ Devise.setup do |config|
     {
       scope: 'email,profile',
       prompt: 'select_account',
-      hd: ENV['GOOGLE_HD']  # Domain restriction
     }
 end
