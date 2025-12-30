@@ -319,7 +319,6 @@ Devise.setup do |config|
     {
       scope: 'email',
       prompt: 'select_account',
-      ssl_verify: true
     }
 end
 
