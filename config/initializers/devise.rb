@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'b9de02bc506cebff7aed002e78e2aeb3ccb6aba2a76d203486f1c0431b04f32fec2e989d4566b9431fa09964b502bb8b344cd2f7d2078754d1158929e6cf8b5d'
+  # config.secret_key = ''
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -317,7 +317,7 @@ Devise.setup do |config|
     ENV['GOOGLE_CLIENT_ID'],
     ENV['GOOGLE_CLIENT_SECRET'],
     {
-      scope: 'email',
+      scope: 'email,profile',
       prompt: 'select_account',
     }
 end
