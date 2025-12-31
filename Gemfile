@@ -52,6 +52,12 @@ gem 'pundit'
 # Security & Compliance (HIPAA)
 gem 'paper_trail'
 gem 'attr_encrypted'
+gem 'paranoia' # Soft deletes
+gem 'blind_index' # Searchable encryption
+
+# API & HTTP
+gem 'httparty' # HTTP client for GoHighLevel API
+gem 'kaminari' # Pagination
 
 # # Bundling
 gem 'jsbundling-rails'

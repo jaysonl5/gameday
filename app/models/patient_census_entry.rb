@@ -1,6 +1,9 @@
 class PatientCensusEntry < ApplicationRecord
   has_paper_trail
 
+  # Associations
+  belongs_to :patient
+
   # Encrypt PHI fields
   attr_encrypted :patient_name, key: ENV['ENCRYPTION_KEY']
   attr_encrypted :phone_number, key: ENV['ENCRYPTION_KEY']
